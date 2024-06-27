@@ -23,4 +23,4 @@ $ gcc -Wall -Werror -Wextra -pedantic ./src/*.c -lm -o maze `sdl2-config --cflag
 ```
 ## Author :black_nib:
 
-- **Mohammed Boukar** <[Zubby](https://github.com/SimoBoukar)>
+- **Mohammed Boukar** <[SimoBoukar](https://github.com/SimoBoukar)>
