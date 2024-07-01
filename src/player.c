@@ -1,40 +1,34 @@
 #include "../headers/header.h"
 
-
-/**
- * movePlayer - set the next position of the player
- * @DeltaTime: time elapsed since the last frame
- */
-
-void movePlayer(float DeltaTime)
-{
-	float moveStep, newPlayerX, newPlayerY;
-
-	player.rotationAngle += player.turnDirection * player.turnSpeed * DeltaTime;
-	moveStep = player.walkDirection * player.walkSpeed * DeltaTime;
-
-	newPlayerX = player.x + cos(player.rotationAngle) * moveStep;
-	newPlayerY = player.y + sin(player.rotationAngle) * moveStep;
-
-	if (!DetectCollision(newPlayerX, newPlayerY))
-	{
-		player.x = newPlayerX;
-		player.y = newPlayerY;
+void movePlayer(double moveSpeed, double rotSpeed) {
+	// Move forward if no wall in front of you
+	if (SDL_GetKeyboardState(NULL)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_W]) {
+		if(worldMap[(int)(posX + dirX * moveSpeed)][(int)posY] == 0) posX += dirX * moveSpeed;
+		if(worldMap[(int)posX][(int)(posY + dirY * moveSpeed)] == 0) posY += dirY * moveSpeed;
 	}
-}
-
-/**
- * renderPlayer - render the player
- *
- */
-
-void renderPlayer(void)
-{
-	drawRect(
-			player.x * MINIMAP_SCALE_FACTOR,
-			player.y * MINIMAP_SCALE_FACTOR,
-			player.width * MINIMAP_SCALE_FACTOR,
-			player.height * MINIMAP_SCALE_FACTOR,
-			0xFFFFFFFF
-		);
+	// Move backwards if no wall behind you
+	if (SDL_GetKeyboardState(NULL)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_S]) {
+		if(worldMap[(int)(posX - dirX * moveSpeed)][(int)posY] == 0) posX -= dirX * moveSpeed;
+		if(worldMap[(int)posX][(int)(posY - dirY * moveSpeed)] == 0) posY -= dirY * moveSpeed;
+	}
+	// Rotate to the right
+	if (SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_D]) {
+		// Both camera direction and camera plane must be rotated
+		double oldDirX = dirX;
+		dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+		dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+		double oldPlaneX = planeX;
+		planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+		planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+	}
+	// Rotate to the left
+	if (SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_A]) {
+		// Both camera direction and camera plane must be rotated
+		double oldDirX = dirX;
+		dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+		dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+		double oldPlaneX = planeX;
+		planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+		planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+	}
 }

@@ -1,97 +1,54 @@
 #include "../headers/header.h"
 
-bool GameRunning = false;
-int TicksLastFrame;
-player_t player;
+int main(int argc, char* argv[]) {
+	SDL_Window* window = NULL;
+	SDL_Renderer* renderer = NULL;
 
-/**
- * setup_game - initialize player variables and load wall textures
- *
- */
-
-void setup_game(void)
-{
-
-	player.x = SCREEN_WIDTH / 2;
-	player.y = SCREEN_HEIGHT / 2;
-	player.width = 1;
-	player.height = 30;
-	player.walkDirection = 0;
-	player.walkSpeed = 100;
-	player.turnDirection = 0;
-	player.turnSpeed = 45 * (PI / 180);
-	player.rotationAngle = PI / 2;
-	WallTexturesready();
-}
-
-
-/**
- * update_game - update_game delta time, the ticks last frame
- *          the player movement and the ray casting
- *
- */
-void update_game(void)
-{
-	float DeltaTime;
-	int timeToWait = FRAME_TIME_LENGTH - (SDL_GetTicks() - TicksLastFrame);
-
-	if (timeToWait > 0 && timeToWait <= FRAME_TIME_LENGTH)
-	{
-		SDL_Delay(timeToWait);
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		return 1;
 	}
-	DeltaTime = (SDL_GetTicks() - TicksLastFrame) / 1000.0f;
 
-	TicksLastFrame = SDL_GetTicks();
-
-	movePlayer(DeltaTime);
-	castAllRays();
-}
-
-/**
- * render - calls all functions needed for on-screen rendering
- *
- */
-
-void render_game(void)
-{
-	clearColorBuffer(0xFF000000);
-
-	renderWall();
-
-	renderMap();
-	renderRays();
-	renderPlayer();
-
-	renderColorBuffer();
-}
-
-/**
- * Destroy - free wall textures and destroy window
- *
- */
-void destroy_game(void)
-{
-	freeWallTextures();
-	destroyWindow();
-}
-
-/**
- * main - main function
- * Return: 0
- */
-
-int main(void)
-{
-	GameRunning = initializeWindow();
-
-	setup_game();
-
-	while (GameRunning)
-	{
-		handleInput();
-		update_game();
-		render_game();
+	window = SDL_CreateWindow("Raycasting Maze", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
+	if (window == NULL) {
+		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		return 1;
 	}
-	destroy_game();
-	return (0);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (renderer == NULL) {
+		printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
+		return 1;
+	}
+
+	initMap();
+
+	double moveSpeed = 0.02; // Move 5% of a tile per frame
+	double rotSpeed = 0.02; // Rotate 5% of a radian per frame
+
+	SDL_bool quit = SDL_FALSE;
+	while (!quit) {
+		SDL_Event e;
+		while (SDL_PollEvent(&e) != 0) {
+			if (e.type == SDL_QUIT) {
+				quit = SDL_TRUE;
+			}
+		}
+
+		movePlayer(moveSpeed, rotSpeed);
+
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
+
+		castRays(renderer);
+		renderMinimap(renderer);  // Add this line to render the minimap
+
+		SDL_RenderPresent(renderer);
+	}
+
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+
+	return 0;
 }
