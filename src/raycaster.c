@@ -118,12 +118,6 @@ void castRays(SDL_Renderer* renderer) {
 			SDL_RenderCopy(renderer, textures[texNum], &srcRect, &destRect);
 		}
 
-		// Debug: Draw a colored line for floor and ceiling
-    		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);  // Green for floor
-    		SDL_RenderDrawLine(renderer, x, drawEnd + 1, x, screenHeight - 1);
-    		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // Blue for ceiling
-    		SDL_RenderDrawLine(renderer, x, 0, x, drawStart - 1);
-
 		// Floor and ceiling casting
 		double floorXWall, floorYWall;
 
