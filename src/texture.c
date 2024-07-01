@@ -1,7 +1,7 @@
 #include "../headers/header.h"
 #include <SDL2/SDL_image.h>
 
-#define NUM_TEXTURES 3
+#define NUM_TEXTURES 5
 SDL_Texture* textures[NUM_TEXTURES];
 
 void loadTextures(SDL_Renderer* renderer) {
@@ -9,6 +9,8 @@ void loadTextures(SDL_Renderer* renderer) {
 		"textures/bricksx34.png",
 		"textures/redbrick.png",
 		"textures/eagle.png",
+		"textures/graystone.png",
+		"textures/wood.png"
 	};
 
 	for (int i = 0; i < NUM_TEXTURES; i++) {

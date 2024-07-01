@@ -117,5 +117,61 @@ void castRays(SDL_Renderer* renderer) {
 			destRect.h = 1;
 			SDL_RenderCopy(renderer, textures[texNum], &srcRect, &destRect);
 		}
+
+		// Debug: Draw a colored line for floor and ceiling
+    		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);  // Green for floor
+    		SDL_RenderDrawLine(renderer, x, drawEnd + 1, x, screenHeight - 1);
+    		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // Blue for ceiling
+    		SDL_RenderDrawLine(renderer, x, 0, x, drawStart - 1);
+
+		// Floor and ceiling casting
+		double floorXWall, floorYWall;
+
+		// 4 different wall directions possible
+		if(side == 0 && rayDirX > 0) {
+			floorXWall = mapX;
+			floorYWall = mapY + wallX;
+		} else if(side == 0 && rayDirX < 0) {
+			floorXWall = mapX + 1.0;
+			floorYWall = mapY + wallX;
+		} else if(side == 1 && rayDirY > 0) {
+			floorXWall = mapX + wallX;
+			floorYWall = mapY;
+		} else {
+			floorXWall = mapX + wallX;
+			floorYWall = mapY + 1.0;
+		}
+
+		double distWall, distPlayer, currentDist;
+
+		distWall = perpWallDist;
+		distPlayer = 0.0;
+
+		if (drawEnd < 0) drawEnd = screenHeight; // becomes < 0 when the integer overflows
+
+		// draw the floor from drawEnd to the bottom of the screen
+		for(int y = drawEnd + 1; y < screenHeight; y++) {
+			currentDist = screenHeight / (2.0 * y - screenHeight);
+
+			double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+			double currentFloorX = weight * floorXWall + (1.0 - weight) * posX;
+			double currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
+
+			int floorTexX, floorTexY;
+			floorTexX = (int)(currentFloorX * TEXTURE_WIDTH) % TEXTURE_WIDTH;
+			floorTexY = (int)(currentFloorY * TEXTURE_HEIGHT) % TEXTURE_HEIGHT;
+
+			// floor
+			SDL_Rect floorSrcRect = {floorTexX, floorTexY, 1, 1};
+			SDL_Rect floorDestRect = {x, y, 1, 1};
+			SDL_RenderCopy(renderer, textures[5], &floorSrcRect, &floorDestRect);
+
+			// ceilling (symmetrical)
+			SDL_Rect ceilingSrcRect = {floorTexX, floorTexY, 1, 1};
+			SDL_Rect ceilingDestRect = {x, screenHeight - y, 1, 1};
+			SDL_RenderCopy(renderer, textures[6], &ceilingSrcRect, &ceilingDestRect);
+		}
+
 	}
 }
