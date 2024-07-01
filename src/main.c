@@ -9,6 +9,11 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
+	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+			return 1;
+	}
+
 	window = SDL_CreateWindow("Raycasting Maze", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
 	if (window == NULL) {
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -23,10 +28,13 @@ int main(int argc, char* argv[]) {
 
 	initMap();
 
-	double moveSpeed = 0.02; // Move 5% of a tile per frame
-	double rotSpeed = 0.02; // Rotate 5% of a radian per frame
+	double moveSpeed = 0.05; // Move 5% of a tile per frame
+	double rotSpeed = 0.05; // Rotate 5% of a radian per frame
 
 	SDL_bool quit = SDL_FALSE;
+
+	loadTextures(renderer);
+
 	while (!quit) {
 		SDL_Event e;
 		while (SDL_PollEvent(&e) != 0) {
@@ -48,6 +56,8 @@ int main(int argc, char* argv[]) {
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	unloadTextures();
+	IMG_Quit();
 	SDL_Quit();
 
 	return 0;

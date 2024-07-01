@@ -91,5 +91,31 @@ void castRays(SDL_Renderer* renderer) {
 
 		//draw the pixels of the stripe as a vertical line
 		drawLine(renderer, x, drawStart, drawEnd, color);
+
+		int texNum = worldMap[mapX][mapY] - 1; // Assuming 1-based indexing in worldMap
+		double wallX;
+		if (side == 0) wallX = posY + perpWallDist * rayDirY;
+		else           wallX = posX + perpWallDist * rayDirX;
+		wallX -= floor(wallX);
+
+		int texX = (int)(wallX * TEXTURE_WIDTH);
+		if(side == 0 && rayDirX > 0) texX = TEXTURE_WIDTH - texX - 1;
+		if(side == 1 && rayDirY < 0) texX = TEXTURE_WIDTH - texX - 1;
+
+		// Draw the textured vertical line
+		double step = 1.0 * TEXTURE_HEIGHT / lineHeight;
+		double texPos = (drawStart - screenHeight / 2 + lineHeight / 2) * step;
+
+		SDL_Rect srcRect = {texX, 0, 1, TEXTURE_HEIGHT};
+		SDL_Rect destRect = {x, drawStart, 1, drawEnd - drawStart};
+
+		for(int y = drawStart; y < drawEnd; y++) {
+			int texY = (int)texPos & (TEXTURE_HEIGHT - 1);
+			texPos += step;
+			srcRect.y = texY;
+			destRect.y = y;
+			destRect.h = 1;
+			SDL_RenderCopy(renderer, textures[texNum], &srcRect, &destRect);
+		}
 	}
 }
