@@ -159,12 +159,12 @@ void castRays(SDL_Renderer* renderer) {
 			// floor
 			SDL_Rect floorSrcRect = {floorTexX, floorTexY, 1, 1};
 			SDL_Rect floorDestRect = {x, y, 1, 1};
-			SDL_RenderCopy(renderer, textures[5], &floorSrcRect, &floorDestRect);
+			SDL_RenderCopy(renderer, textures[3], &floorSrcRect, &floorDestRect);
 
 			// ceilling (symmetrical)
 			SDL_Rect ceilingSrcRect = {floorTexX, floorTexY, 1, 1};
 			SDL_Rect ceilingDestRect = {x, screenHeight - y, 1, 1};
-			SDL_RenderCopy(renderer, textures[6], &ceilingSrcRect, &ceilingDestRect);
+			SDL_RenderCopy(renderer, textures[4], &ceilingSrcRect, &ceilingDestRect);
 		}
 
 	}
