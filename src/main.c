@@ -30,8 +30,8 @@ int main(int argc, char* argv[]) {
 	loadTextures(renderer);
 	initMap();
 
-	double moveSpeed = 0.05; // Move 5% of a tile per frame
-	double rotSpeed = 0.05; // Rotate 5% of a radian per frame
+	double moveSpeed = 0.1; // Move 5% of a tile per frame
+	double rotSpeed = 0.1; // Rotate 5% of a radian per frame
 
 	SDL_bool quit = SDL_FALSE;
 

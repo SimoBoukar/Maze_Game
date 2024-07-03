@@ -1,15 +1,21 @@
 #include "../headers/header.h"
 
 void movePlayer(double moveSpeed, double rotSpeed) {
+	double newPosX, newPosY;
+
 	// Move forward if no wall in front of you
 	if (SDL_GetKeyboardState(NULL)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_W]) {
-		if(worldMap[(int)(posX + dirX * moveSpeed)][(int)posY] == 0) posX += dirX * moveSpeed;
-		if(worldMap[(int)posX][(int)(posY + dirY * moveSpeed)] == 0) posY += dirY * moveSpeed;
+		newPosX = posX + dirX * moveSpeed;
+		newPosY = posY + dirY * moveSpeed;
+		if(worldMap[(int)newPosX][(int)posY] == 0) posX = newPosX;
+		if(worldMap[(int)posX][(int)newPosY] == 0) posY = newPosY;
 	}
 	// Move backwards if no wall behind you
 	if (SDL_GetKeyboardState(NULL)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_S]) {
-		if(worldMap[(int)(posX - dirX * moveSpeed)][(int)posY] == 0) posX -= dirX * moveSpeed;
-		if(worldMap[(int)posX][(int)(posY - dirY * moveSpeed)] == 0) posY -= dirY * moveSpeed;
+		newPosX = posX - dirX * moveSpeed;
+		newPosY = posY - dirY * moveSpeed;
+		if(worldMap[(int)newPosX][(int)posY] == 0) posX = newPosX;
+		if(worldMap[(int)posX][(int)newPosY] == 0) posY = newPosY;
 	}
 	// Rotate to the right
 	if (SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(NULL)[SDL_SCANCODE_D]) {

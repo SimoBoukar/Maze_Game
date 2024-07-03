@@ -8,7 +8,7 @@
 
 #define mapWidth 24
 #define mapHeight 24
-#define screenWidth 640
+#define screenWidth 600
 #define screenHeight 480
 #define TEXTURE_WIDTH 64
 #define TEXTURE_HEIGHT 64
@@ -26,5 +26,6 @@ void renderMinimap(SDL_Renderer* renderer);
 extern SDL_Texture* textures[];
 void loadTextures(SDL_Renderer* renderer);
 void unloadTextures();
+Uint32 getPixel(int texNum, int x, int y);
 
 #endif
