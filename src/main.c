@@ -11,10 +11,11 @@ int main(int argc, char* argv[]) {
 
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
 		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-			return 1;
+		return 1;
 	}
 
-	window = SDL_CreateWindow("Raycasting Maze", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Raycasting Maze", SDL_WINDOWPOS_UNDEFINED,
+		       	SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
 	if (window == NULL) {
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 		return 1;
@@ -26,6 +27,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
+	loadTextures(renderer);
 	initMap();
 
 	double moveSpeed = 0.05; // Move 5% of a tile per frame
@@ -33,7 +35,11 @@ int main(int argc, char* argv[]) {
 
 	SDL_bool quit = SDL_FALSE;
 
-	loadTextures(renderer);
+	const int targetFPS = 60;
+	const int frameDelay = 1000 / targetFPS;
+
+	Uint32 frameStart;
+	int frameTime;
 
 	while (!quit) {
 		SDL_Event e;
@@ -52,6 +58,11 @@ int main(int argc, char* argv[]) {
 		renderMinimap(renderer);  // Add this line to render the minimap
 
 		SDL_RenderPresent(renderer);
+
+		frameTime = SDL_GetTicks() - frameStart;
+		if (frameDelay > frameTime) {
+			SDL_Delay(frameDelay - frameTime);
+		}
 	}
 
 	SDL_DestroyRenderer(renderer);
