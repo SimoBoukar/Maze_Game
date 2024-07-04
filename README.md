@@ -19,7 +19,7 @@ $ git clone https://github.com/SimoBoukar/Maze-Game.git
 
 ## Compilation
 ```sh
-$ gcc -Wall -Werror -Wextra -pedantic ./src/*.c -lm -o maze `sdl2-config --cflags` `sdl2-config --libs`;
+$ gcc src/*.c -o maze -lSDL2 -lSDL2_image -lm
 ```
 ## Author :black_nib:
 
