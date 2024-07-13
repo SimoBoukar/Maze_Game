@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	window = SDL_CreateWindow("Raycasting Maze", SDL_WINDOWPOS_UNDEFINED,
+	window = SDL_CreateWindow("Maze Game", SDL_WINDOWPOS_UNDEFINED,
 		       	SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
 	if (window == NULL) {
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
