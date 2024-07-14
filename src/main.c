@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 		printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
 		return 1;
 	}
-
+	
 	loadTextures(renderer);
 	initMap();
 

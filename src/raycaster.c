@@ -26,13 +26,16 @@ void castRays(SDL_Renderer* renderer) {
 
 		int hit = 0;
 		int side;
-
-		while (hit == 0) {
+		//perform DDA
+		while (hit == 0)
+	       	{
 			if (sideDistX < sideDistY) {
 				sideDistX += deltaDistX;
 				mapX += stepX;
 				side = 0;
-			} else {
+			}
+		       	else
+		       	{
 				sideDistY += deltaDistY;
 				mapY += stepY;
 				side = 1;
@@ -78,7 +81,7 @@ void castRays(SDL_Renderer* renderer) {
 			SDL_SetRenderDrawColor(renderer, (color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, 255);
 			SDL_RenderDrawPoint(renderer, x, y);
 		}
-
+		
 		// Simplified floor and ceiling casting
 		double floorXWall, floorYWall;
 		if (side == 0 && rayDirX > 0) {
@@ -114,7 +117,8 @@ void castRays(SDL_Renderer* renderer) {
 
 			// Ceiling
 			Uint32 ceilingColor = getPixel(4, floorTexX, floorTexY);
-			SDL_SetRenderDrawColor(renderer, (ceilingColor >> 16) & 0xFF, (ceilingColor >> 8) & 0xFF, ceilingColor & 0xFF, 255);
+			SDL_SetRenderDrawColor(renderer, (ceilingColor >> 16) & 0xFF,
+				       	(ceilingColor >> 8) & 0xFF, ceilingColor & 0xFF, 255);
 			SDL_RenderDrawPoint(renderer, x, screenHeight - y);
 		}
 	}

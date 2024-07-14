@@ -8,8 +8,8 @@
 
 #define mapWidth 24
 #define mapHeight 24
-#define screenWidth 600
-#define screenHeight 400
+#define screenWidth 1280
+#define screenHeight 768
 #define TEXTURE_WIDTH 64
 #define TEXTURE_HEIGHT 64
 
