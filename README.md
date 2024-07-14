@@ -24,6 +24,7 @@ $ gcc src/*.c -o maze -lSDL2 -lSDL2_image -lm
 
 ## Maze Game Demo 
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/GjNG_vonhCs)](https://www.youtube.com/watch?v=GjNG_vonhCs)
 
 ## Author :black_nib:
 
