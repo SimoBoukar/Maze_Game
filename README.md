@@ -22,8 +22,7 @@ $ git clone https://github.com/SimoBoukar/Maze-Game.git
 $ gcc src/*.c -o maze -lSDL2 -lSDL2_image -lm
 ```
 
-## Demo
-[![The Maze Demo](https://i.imgur.com/5Ss7s1S.png)](https://www.youtube.com/watch?v=GjNG_vonhCs&t=12s)
+## Maze Game Demo 
 
 
 ## Author :black_nib:
